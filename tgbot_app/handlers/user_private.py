@@ -44,10 +44,8 @@ async def post_comment(
     await state.set_data({'comment': message.text})
     data = await state.get_data()
     await state.clear()
-    headers = {"Content-Type": "application/json"}
     query = await api_client.post_query(
-        'https://my_nginx/api/comments-add/',
-        headers=headers,
+        url='https://my-nginx/api/comments-add/',
         prompt=data
     )
     response_text = 'Ошибка'
@@ -61,10 +59,8 @@ async def post_user(
     message: types.Message,
 ):
     data = {'username': message.from_user.username}
-    headers = {"Content-Type": "application/json"}
     query = await api_client.post_query(
-        'https://my_nginx/api/users-add/',
-        headers=headers,
+        url='http://my-nginx/api/users-add/',
         prompt=data
     )
     response_text = 'Ошибка'

@@ -1,9 +1,17 @@
+import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from handlers.router import router
 from database.engine import database
 from database.models import Base
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    filename='bot_log.log',
+    format="%(asctime)s %(levelname)s %(message)s"
+)
 
 
 @asynccontextmanager
