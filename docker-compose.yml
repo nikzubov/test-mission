@@ -8,7 +8,7 @@ services:
     restart: always
     environment:
       - REDIS_HOST=redis
-      - DB_HOST=postgres
+      - DB_HOST=db
     depends_on:
       - redis
     ports:
@@ -16,6 +16,7 @@ services:
 
   redis:
     image: redis
+    container_name: redis
     restart: always
     command: redis-server --requirepass ${R_PASSWORD}
     environment:
@@ -23,10 +24,13 @@ services:
     ports:
       - "6379:6379"
 
-  postgres:
+  db:
     image: postgres
+    container_name: db
     shm_size: 128mb
     restart: always
+    volumes:
+      - volume_name:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -38,17 +42,17 @@ services:
     build: ./fastapi_app
     restart: always
     depends_on:
-      - postgres
+      - db
     ports:
       - "8000:8000"
 
   nginx:
-    build: nginx
+    image: nginx
     container_name: my-nginx
     volumes:
-      - ./reverse_proxy/nginx.conf:/etc/nginx/nginx.conf
-      - ./reverse_proxy/cert.pem:/etc/cert.pem
-      - ./reverse_proxy/key.pem:/etc/key.pem
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/cert.pem:/etc/cert.pem
+      - ./nginx/key.pem:/etc/key.pem
     ports:
       - "80:80"
       - "443:443"
@@ -57,10 +61,15 @@ services:
     build:
       context: ./certbot
       dockerfile: Dockerfile
-    volumes:
-      - ./reverse_proxy/:/etc/nginx/
-    ports:
-      - "6000:80"
-    args:
+      args:
         DOMAIN_EMAIL: ${DOMAIN_EMAIL}
         DOMAIN_URL: ${DOMAIN_URL}
+    depends_on:
+      - nginx
+    volumes:
+      - ./nginx/:/etc/nginx/
+    ports:
+      - "6000:80"
+
+volumes:
+  volume_name:

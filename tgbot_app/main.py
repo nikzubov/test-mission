@@ -15,7 +15,7 @@ BOT = Bot(
     default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
 )
 
-REDIS_URL_1 = f'redis://:{settings.R_PASSWORD}@localhost:6379/0?decode_responses=True&protocol=3'
+REDIS_URL_1 = f'redis://:{settings.R_PASSWORD}@redis:6379/0?decode_responses=True&protocol=3'
 
 redis_fsm_storage = RedisStorage.from_url(
     url=REDIS_URL_1,
