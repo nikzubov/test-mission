@@ -13,6 +13,9 @@ services:
       - redis
     ports:
      - "222:222"
+    networks:
+      - test-mission_default
+
 
   redis:
     image: redis
@@ -23,6 +26,9 @@ services:
       - R_PASSWORD=${R_PASSWORD}
     ports:
       - "6379:6379"
+    networks:
+      - test-mission_default
+
 
   db:
     image: postgres
@@ -37,6 +43,9 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - "5432:5432"
+    networks:
+      - test-mission_default
+
 
   fastapi_app:
     build: ./fastapi_app
@@ -46,6 +55,9 @@ services:
       - db
     ports:
       - "8000:8000"
+    networks:
+      - test-mission_default
+
 
   nginx:
     image: nginx
@@ -58,6 +70,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    networks:
+      - test-mission_default
+
 
   certbot:
     image: certbot/certbot
@@ -70,8 +85,15 @@ services:
     command: certonly --webroot -w /var/www/html --email anakinnikitaa@gmail.com -d anakinnikita.ru --cert-name=certfolder --key-type rsa --agree-tos
     ports:
       - "6000:80"
+    networks:
+      - test-mission_default
+
 
 volumes:
   some_volume:
   www-html:
   etc-letsencrypt:
+
+networks:
+  test-mission_default:
+    external: true
