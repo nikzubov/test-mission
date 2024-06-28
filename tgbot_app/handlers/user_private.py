@@ -1,3 +1,4 @@
+import logging
 from aiogram import F, Router, types
 from aiogram.filters import CommandStart
 from aiogram.filters.logic import or_f
@@ -41,9 +42,13 @@ async def post_comment(
     message: types.Message,
     state: FSMContext,
 ):
-    await state.set_data({'comment': message.text})
+    await state.set_data({
+        'comment': message.text,
+        'username': message.from_user.username
+    })
     data = await state.get_data()
     await state.clear()
+    logging.info(data)
     query = await api_client.post_query(
         url='https://my-nginx/api/comments-add/',
         prompt=data
@@ -67,3 +72,37 @@ async def post_user(
     if query:
         response_text = 'Успешно'
     await message.answer(response_text)
+
+
+@user_private_router.message(
+    F.text.lower() == 'посмотреть всех пользователей.'
+)
+async def get_users(
+    message: types.Message,
+):
+    response = await api_client.get_query(
+        url='http://my-nginx/api/users/',
+    )
+    text = ''
+    for elem in response:
+        text += f'{elem.get("id")}. *{elem.get("username")}*\n'
+    if not text:
+        text = 'Пусто'
+    logging.info(text)
+    await message.answer(text)
+
+
+@user_private_router.message(F.text.lower() == 'посмотреть все комментарии.')
+async def get_comments(
+    message: types.Message,
+):
+    response = await api_client.get_query(
+        url='http://my-nginx/api/comments/',
+    )
+    text = ''
+    for elem in response:
+        text += f'*{elem.get("username")}*:\n{elem.get("comment")}\n'
+    logging.info(text)
+    if not text:
+        text = 'Пусто'
+    await message.answer(text)
