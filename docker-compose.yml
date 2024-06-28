@@ -53,8 +53,8 @@ services:
     restart: always
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/cert.pem:/etc/cert.pem
-      - ./nginx/key.pem:/etc/key.pem
+      - etc-letsencrypt:/etc/letsencrypt
+      - www-html:/var/www/html
     depends_on:
       - certbot
     ports:
@@ -62,20 +62,19 @@ services:
       - "443:443"
 
   certbot:
+    image: certbot/certbot
     restart: unless-stopped
     container_name: certbot
-    build:
-      context: ./certbot
-      dockerfile: Dockerfile
-      args:
-        DOMAIN_EMAIL: ${DOMAIN_EMAIL}
-        DOMAIN_URL: ${DOMAIN_URL}
     volumes:
-      - ./nginx/:/etc/nginx/
-      - ./data/letsencrypt:/etc/letsencrypt
-      - ./data/lib:/var/lib/letsencrypt
+      - etc-letsencrypt:/etc/letsencrypt
+      - www-html:/var/www/html
+    depends_on:
+      - nginx
+    command: certbot certonly --webroot -w /var/www/html --email anakinnikitaa@gmail.com -d anakinnikita.ru --cert-name=certfolder --key-type rsa --agree-tos
     ports:
       - "6000:80"
 
 volumes:
   some_volume:
+  www-html:
+  etc-letsencrypt:
