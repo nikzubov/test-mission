@@ -54,7 +54,7 @@ async def post_comment(
         prompt=data
     )
     text = 'Успешно'
-    if isinstance(response, str):
+    if response == 'Произошла ошибка':
         text = 'Ошибка'
     await message.answer(text)
 
@@ -69,7 +69,7 @@ async def post_user(
         prompt=data
     )
     text = 'Успешно'
-    if isinstance(response, str):
+    if response == 'Произошла ошибка':
         text = 'Ошибка'
     await message.answer(text)
 
