@@ -1,4 +1,5 @@
 import logging
+
 from aiogram import F, Router, types
 from aiogram.filters import CommandStart
 from aiogram.filters.logic import or_f
@@ -7,7 +8,7 @@ from aiogram.fsm.state import State, StatesGroup
 
 from api.api_client import api_client
 from filters.chat_types import ChatTypeFilter
-from kb.reply_kb import START_KB, ADD_KB
+from kb.reply_kb import ADD_KB, START_KB
 
 user_private_router = Router()
 user_private_router.message.filter(ChatTypeFilter(('private')))
