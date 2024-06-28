@@ -1,11 +1,12 @@
 import logging
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
-from handlers.router import router
+
 from database.engine import database
 from database.models import Base
-
+from handlers.router import router
 
 logging.basicConfig(
     level=logging.INFO,

@@ -49,7 +49,7 @@ T_TOKEN=<токен, который был выдан BotFather>
 
 После чего перейдите `vim nginx/nginx.conf` и укажите его вместо ```anakinnikita.ru```, то же самое сделайте в docker-compose.yml:  
 ```command: certonly --webroot -w /var/www/html --email anakinnikitaa@gmail.com -d anakinnikita.ru --cert-name=certfolder --key-type rsa --agree-tos```  
-Замените anakinnikitaa@gmail.com на ваш почтовый ящик и anakinnikita.ru на ваш домен.
+Замените anakinnikitaa@gmail.com на ваш почтовый ящик и anakinnikita.ru на ваш домен, также рекомендуется указывать имя домена вместо `certfolder`.  
 ## Запуск контейнеров
 Теперь можно запускать контейнеры:  
 `docker compose up --build -d`  

@@ -1,10 +1,13 @@
 from typing import List
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from database.orm import (orm_get_users, orm_add_users,
-                          orm_add_comments, orm_get_comments)
+
 from database.engine import database
-from schemas.users import CommentsCreate, CommentsRead, UsersRead, UsersCreate
+from database.orm import (orm_add_comments, orm_add_users, orm_get_comments,
+                          orm_get_users)
+from schemas.comments import CommentsCreate, CommentsRead
+from schemas.users import UsersCreate, UsersRead
 
 router = APIRouter()
 

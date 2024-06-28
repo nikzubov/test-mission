@@ -1,8 +1,11 @@
+from typing import Sequence
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Sequence
-from schemas.users import UsersCreate, CommentsCreate
-from database.models import Users, UserComments
+
+from database.models import UserComments, Users
+from schemas.comments import CommentsCreate
+from schemas.users import UsersCreate
 
 
 async def orm_get_users(
