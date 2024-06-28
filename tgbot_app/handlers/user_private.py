@@ -7,7 +7,7 @@ from aiogram.fsm.state import State, StatesGroup
 
 from api.api_client import api_client
 from filters.chat_types import ChatTypeFilter
-from kb.reply_kb import START_KB
+from kb.reply_kb import START_KB, ADD_KB
 
 user_private_router = Router()
 user_private_router.message.filter(ChatTypeFilter(('private')))
@@ -29,13 +29,31 @@ async def start(message: types.Message):
         reply_markup=START_KB,
     )
 
+
 @user_private_router.message(F.text.lower() == 'добавить комментарий.')
 async def create(message: types.Message,  state: FSMContext):
     await message.answer(
         'Введите информацию',
+        reply_markup=ADD_KB
     )
     await state.set_state(AddInfo.text)
-    
+
+
+@user_private_router.message(
+    AddInfo.text,
+    F.text.lower() == 'выйти без сохранения'
+)
+async def post_comment_quit(
+    message: types.Message,
+    state: FSMContext,
+):
+    await state.clear()
+    text = 'Вы вышли.'
+    await message.answer(
+        text,
+        reply_markup=START_KB
+    )
+
 
 @user_private_router.message(AddInfo.text, F.text)
 async def post_comment(
@@ -56,7 +74,10 @@ async def post_comment(
     text = 'Успешно'
     if response == 'Произошла ошибка':
         text = 'Ошибка'
-    await message.answer(text)
+    await message.answer(
+        text,
+        reply_markup=START_KB
+    )
 
 
 @user_private_router.message(F.text.lower() == 'зарегистрироваться.')

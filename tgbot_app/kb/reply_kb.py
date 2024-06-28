@@ -30,3 +30,7 @@ START_KB = get_kb(
         placeholder='Что вас интересует?',
         sizes=(1,)
 )
+
+ADD_KB = get_kb(
+    'Выйти без сохранения'
+)
