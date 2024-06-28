@@ -65,7 +65,7 @@ async def post_user(
 ):
     data = {'username': message.from_user.username}
     query = await api_client.post_query(
-        url='http://my-nginx/api/users-add/',
+        url='https://my-nginx/api/users-add/',
         prompt=data
     )
     response_text = 'Ошибка'
@@ -81,14 +81,14 @@ async def get_users(
     message: types.Message,
 ):
     response = await api_client.get_query(
-        url='http://my-nginx/api/users/',
+        url='https://my-nginx/api/users/',
     )
     text = ''
     for elem in response:
         text += f'{elem.get("id")}. *{elem.get("username")}*\n'
     if not text:
         text = 'Пусто'
-    logging.info(text)
+    logging.debug(text)
     await message.answer(text)
 
 
@@ -97,12 +97,12 @@ async def get_comments(
     message: types.Message,
 ):
     response = await api_client.get_query(
-        url='http://my-nginx/api/comments/',
+        url='https://my-nginx/api/comments/',
     )
     text = ''
     for elem in response:
         text += f'*{elem.get("username")}*:\n{elem.get("comment")}\n'
-    logging.info(text)
+    logging.debug(text)
     if not text:
         text = 'Пусто'
     await message.answer(text)

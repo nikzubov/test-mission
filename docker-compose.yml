@@ -61,7 +61,6 @@ services:
 
   certbot:
     image: certbot/certbot
-    restart: unless-stopped
     container_name: certbot
     volumes:
       - etc-letsencrypt:/etc/letsencrypt
