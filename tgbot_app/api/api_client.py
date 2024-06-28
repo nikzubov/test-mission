@@ -7,12 +7,13 @@ class APIClient:
     headers = headers = {"Content-Type": "application/json"}
 
     async def get_query(self, url, prompt=None):
-        async with aiohttp.ClientSession(trust_env=True) as session:
+        async with aiohttp.ClientSession() as session:
             try:
                 async with session.get(
                     url=url,
                     headers=self.headers,
                     json=prompt,
+                    ssl=False
                 ) as response:
                     response.raise_for_status()
                     data = await response.json()
@@ -22,12 +23,13 @@ class APIClient:
             return 'Произошла ошибка'
 
     async def post_query(self, url, prompt):
-        async with aiohttp.ClientSession(trust_env=True) as session:
+        async with aiohttp.ClientSession() as session:
             try:
                 async with session.post(
                     url=url,
                     headers=self.headers,
-                    json=prompt
+                    json=prompt,
+                    ssl=False
                 ) as response:
                     response.raise_for_status()
                     data = await response.text()

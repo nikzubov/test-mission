@@ -49,14 +49,14 @@ async def post_comment(
     data = await state.get_data()
     await state.clear()
     logging.info(data)
-    query = await api_client.post_query(
+    response = await api_client.post_query(
         url='https://my-nginx/api/comments-add/',
         prompt=data
     )
-    response_text = 'Ошибка'
-    if query:
-        response_text = 'Успешно'
-    await message.answer(response_text)
+    text = 'Успешно'
+    if isinstance(response, str):
+        text = 'Ошибка'
+    await message.answer(text)
 
 
 @user_private_router.message(F.text.lower() == 'зарегистрироваться.')
@@ -64,14 +64,14 @@ async def post_user(
     message: types.Message,
 ):
     data = {'username': message.from_user.username}
-    query = await api_client.post_query(
+    response = await api_client.post_query(
         url='https://my-nginx/api/users-add/',
         prompt=data
     )
-    response_text = 'Ошибка'
-    if query:
-        response_text = 'Успешно'
-    await message.answer(response_text)
+    text = 'Успешно'
+    if isinstance(response, str):
+        text = 'Ошибка'
+    await message.answer(text)
 
 
 @user_private_router.message(
@@ -84,10 +84,12 @@ async def get_users(
         url='https://my-nginx/api/users/',
     )
     text = ''
+    if isinstance(response, str):
+        text = 'Пусто'
+        await message.answer(text)
+        return
     for elem in response:
         text += f'{elem.get("id")}. *{elem.get("username")}*\n'
-    if not text:
-        text = 'Пусто'
     logging.debug(text)
     await message.answer(text)
 
@@ -100,9 +102,11 @@ async def get_comments(
         url='https://my-nginx/api/comments/',
     )
     text = ''
+    if isinstance(response, str):
+        text = 'Пусто'
+        await message.answer(text)
+        return
     for elem in response:
         text += f'*{elem.get("username")}*:\n{elem.get("comment")}\n'
     logging.debug(text)
-    if not text:
-        text = 'Пусто'
     await message.answer(text)
