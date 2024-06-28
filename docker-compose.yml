@@ -68,7 +68,7 @@ services:
       - www-html:/var/www/html
     depends_on:
       - nginx
-    command: certbot certonly --webroot -w /var/www/html --email anakinnikitaa@gmail.com -d anakinnikita.ru --cert-name=certfolder --key-type rsa --agree-tos
+    command: certonly --webroot -w /var/www/html --email anakinnikitaa@gmail.com -d anakinnikita.ru --cert-name=certfolder --key-type rsa --agree-tos
     ports:
       - "6000:80"
 
