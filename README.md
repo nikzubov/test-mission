@@ -10,27 +10,27 @@
 `touch .env`  
 `vim .env` - после чего вставить:  
     ```
-    __POSTGRES_USER__=<пользователь для postgres>
-    __POSTGRES_PASSWORD__=<пароль для пользователя>
-    __POSTGRES_DB__=<имя базы>
-    __R_PASSWORD__=<пароль для redis>
+    POSTGRES_USER=<пользователь для postgres>
+    POSTGRES_PASSWORD=<пароль для пользователя>
+    POSTGRES_DB=<имя базы>
+    R_PASSWORD=<пароль для redis>
     ```
 Далее требуется сохранить изменения - `:wq`  
 * В директории __fastapi_app__:  
 `touch .env`  
 `vim .env` - после чего вставить:  
     ```
-    __POSTGRES_USER__=<пользователь для postgres>
-    __POSTGRES_PASSWORD__=<пароль для пользователя>
-    __POSTGRES_DB__=<имя базы>
+    POSTGRES_USER=<пользователь для postgres>
+    POSTGRES_PASSWORD=<пароль для пользователя>
+    POSTGRES_DB=<имя базы>
     ```
 Далее требуется сохранить изменения - `:wq`  
 * В директории __tgbot_app__:  
 `touch .env`  
 `vim .env` - также вставляем переменные:  
     ```
-    __R_PASSWORD__=<пароль для redis>
-    __T_TOKEN__=<токен, который был выдан BotFather>
+    R_PASSWORD=<пароль для redis>
+    T_TOKEN=<токен, который был выдан BotFather>
     ```
 Далее требуется сохранить изменения - `:wq`
 
