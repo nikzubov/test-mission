@@ -65,6 +65,7 @@ services:
     restart: always
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/robots.txt:/var/www/html/robots.txt
       - etc-letsencrypt:/etc/letsencrypt
       - www-html:/var/www/html
     ports:
